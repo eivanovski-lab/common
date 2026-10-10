@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Про Веру и Анфису — 200 вопросов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f0e4; --surface:#fffaf1; --surface-2:#efe6d5; --line:#e2d6c0;
+  --ink:#2a231d; --muted:#76695a; --accent:#c9741f; --accent-ink:#fff;
+  --ok:#2f7a4a; --ok-bg:#e3f1e6; --rep:#b8502a; --rep-bg:#f8e3d8;
+  --l1:#5b8f3c; --l2:#c9861f; --l3:#b23d3d;
+  --radius:12px; --shadow:0 1px 2px rgba(60,40,20,.06),0 4px 14px rgba(60,40,20,.05);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#1c1814; --surface:#25201b; --surface-2:#2f2922; --line:#3c342b;
+  --ink:#efe6d8; --muted:#a8998a; --accent:#e08e3c; --accent-ink:#1c1814;
+  --ok:#6cc08a; --ok-bg:#1f3527; --rep:#ee8a63; --rep-bg:#3d261d;
+  --l1:#8cc46a; --l2:#e6a944; --l3:#e57373; --shadow:none;
+}}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 "Golos Text",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.app{display:grid;grid-template-rows:auto auto 1fr;height:100vh}
+header{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--surface)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{flex:none;color:var(--accent)}
+.brand h1{font-size:17px;font-weight:700;line-height:1.2}
+.brand p{font-size:12.5px;color:var(--muted)}
+.stats{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.stat{padding:5px 10px;border-radius:999px;background:var(--surface-2);font-size:13px;white-space:nowrap}
+.stat b{font-variant-numeric:tabular-nums}
+.stat.ok{background:var(--ok-bg);color:var(--ok)}
+.stat.rep{background:var(--rep-bg);color:var(--rep)}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:10px 20px;border-bottom:1px solid var(--line)}
+.group{display:flex;align-items:center;gap:6px}
+.group > span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:9px;padding:2px}
+.seg button{border:0;background:transparent;padding:5px 10px;border-radius:7px;font-size:13.5px;white-space:nowrap}
+.seg button[aria-pressed=true]{background:var(--surface);box-shadow:var(--shadow);font-weight:600}
+select{background:var(--surface-2);border:0;border-radius:9px;padding:6px 10px;font-size:13.5px;max-width:240px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:6px 12px;font-size:13.5px;white-space:nowrap}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn:hover{filter:brightness(.97)}
+label.chk{display:flex;align-items:center;gap:6px;font-size:13.5px;cursor:pointer}
+.spacer{flex:1}
+
+main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);min-height:0}
+.pane{overflow:auto;min-height:0}
+#qpane{padding:16px 20px 60px}
+#tpane{border-left:1px solid var(--line);background:var(--surface);padding:0 0 60px}
+
+.banner{display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--accent);color:var(--accent-ink);padding:10px 14px;border-radius:var(--radius);margin-bottom:12px;font-weight:500}
+.banner .btn{background:transparent;border-color:currentColor;color:inherit}
+.count{font-size:13px;color:var(--muted);margin-bottom:10px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;box-shadow:var(--shadow);border-left:4px solid var(--line)}
+.card.ok{border-left-color:var(--ok)}
+.card.rep{border-left-color:var(--rep)}
+.num{font-weight:700;font-variant-numeric:tabular-nums;color:var(--muted);min-width:2.2em;padding-top:1px}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:2px}
+.lvl{font-weight:600;padding:1px 8px;border-radius:999px;border:1px solid currentColor}
+.lvl.l1{color:var(--l1)}.lvl.l2{color:var(--l2)}.lvl.l3{color:var(--l3)}
+.newb{font-weight:600;color:var(--accent)}
+.toText{border:0;background:none;color:var(--muted);text-decoration:underline;text-underline-offset:2px;padding:0;font-size:12px}
+.q{font-weight:600;font-size:15.5px}
+.a{color:var(--ink);opacity:.85}
+.a.hidden{color:transparent;background:var(--surface-2);border-radius:6px;cursor:pointer;user-select:none;opacity:1;position:relative}
+.a.hidden::after{content:"показать ответ";position:absolute;left:8px;top:0;color:var(--muted);font-size:13px}
+.marks{grid-column:2;display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.mark{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 12px;font-size:13.5px}
+.mark.ok[aria-pressed=true]{background:var(--ok);border-color:var(--ok);color:#fff}
+.mark.rep[aria-pressed=true]{background:var(--rep);border-color:var(--rep);color:#fff}
+.empty{text-align:center;color:var(--muted);padding:60px 20px}
+
+.thead{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;gap:10px;align-items:center;z-index:2}
+.thead strong{font-size:14px}
+.thead select{margin-left:auto}
+.tsearch{position:sticky;top:53px;z-index:2;background:var(--surface);border-bottom:1px solid var(--line);padding:8px 24px;display:flex;gap:8px;align-items:center}
+.tsearch input{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface-2);border-radius:9px;padding:7px 10px;font-size:14px}
+.tsearch .btn{padding:5px 10px}
+#tcount{font-size:12.5px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums;min-width:4.5em;text-align:right}
+mark.hit{background:#ffe08a;color:inherit;border-radius:3px;padding:0 1px}
+mark.hit.cur{background:#f29a3a;color:#1c1814;outline:2px solid #f29a3a}
+@media (prefers-color-scheme:dark){mark.hit{background:#6b5520}}
+.story{padding:8px 28px 0;font-family:Literata,Georgia,serif;font-size:16.5px;line-height:1.65;max-width:680px}
+.story h2{font-family:"Golos Text",sans-serif;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:34px 0 4px;scroll-margin-top:60px}
+.story h3{font-size:22px;line-height:1.25;margin:0 0 14px;font-weight:600}
+.story p{margin:0 0 .55em}
+.story .src{font-family:"Golos Text",sans-serif;font-size:13px;color:var(--muted);margin-top:20px}
+.story a{color:var(--accent)}
+.flash{animation:flash 1.6s ease}
+@keyframes flash{0%{background:color-mix(in srgb,var(--accent) 25%,transparent)}100%{background:transparent}}
+
+.tabs{display:none}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:20px;max-width:520px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(20,15,10,.45)}
+dialog h2{font-size:17px;margin-bottom:8px}
+dialog p{font-size:13.5px;color:var(--muted);margin-bottom:10px}
+dialog textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);padding:10px;font-family:ui-monospace,monospace;font-size:13px}
+.drow{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+.msg{font-size:13px;color:var(--ok);min-height:1.2em;margin-top:6px}
+
+@media (max-width:900px){
+  .app{height:auto;min-height:100vh;grid-template-rows:auto auto auto 1fr}
+  header{flex-wrap:wrap;padding:12px 14px}
+  .stats{margin-left:0;width:100%}
+  .toolbar{padding:10px 14px}
+  main{grid-template-columns:1fr}
+  .pane{overflow:visible}
+  #tpane{border-left:0}
+  #qpane{padding:14px}
+  .tabs{display:flex;gap:6px;padding:8px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
+  .tabs button{flex:1;border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:8px}
+  .tabs button[aria-selected=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+  main[data-tab=q] #tpane{display:none}
+  main[data-tab=t] #qpane{display:none}
+  .story{padding:8px 18px 0}
+  .thead{padding:10px 18px;top:52px}
+  .tsearch{padding:8px 18px;top:105px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-label="Логотип: обезьянка" role="img">
+        <circle cx="7" cy="15" r="4.5" stroke="currentColor" stroke-width="2.2"/>
+        <circle cx="27" cy="15" r="4.5" stroke="currentColor" stroke-width="2.2"/>
+        <circle cx="17" cy="17" r="11" stroke="currentColor" stroke-width="2.2" fill="var(--surface)"/>
+        <path d="M10.5 19.5c0-3 2.8-4.5 6.5-4.5s6.5 1.5 6.5 4.5-2.8 5-6.5 5-6.5-2-6.5-5z" stroke="currentColor" stroke-width="2"/>
+        <circle cx="13.5" cy="12.5" r="1.4" fill="currentColor"/><circle cx="20.5" cy="12.5" r="1.4" fill="currentColor"/>
+        <path d="M14.5 21c1.5 1.1 3.5 1.1 5 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <h1>Про Веру и Анфису — 200 вопросов</h1>
+        <p>Эдуард Успенский · 11 историй · вопросы составлены и проверены по полному тексту</p>
+      </div>
+    </div>
+    <div class="stats" aria-live="polite">
+      <span class="stat">Всего <b id="sAll">200</b></span>
+      <span class="stat ok">Знает <b id="sOk">0</b></span>
+      <span class="stat rep">Повторить <b id="sRep">0</b></span>
+      <span class="stat">Без отметки <b id="sNone">200</b></span>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="group"><span>Отметка</span>
+      <div class="seg" id="fStatus">
+        <button data-v="all" aria-pressed="true">Все</button>
+        <button data-v="none" aria-pressed="false">Без отметки</button>
+        <button data-v="rep" aria-pressed="false">Повторить</button>
+        <button data-v="ok" aria-pressed="false">Знает</button>
+      </div>
+    </div>
+    <div class="group"><span>Сложность</span>
+      <div class="seg" id="fLevel">
+        <button data-v="all" aria-pressed="true">Все</button>
+        <button data-v="1" aria-pressed="false">Лёгкие</button>
+        <button data-v="2" aria-pressed="false">Средние</button>
+        <button data-v="3" aria-pressed="false">Сложные</button>
+      </div>
+    </div>
+    <div class="group"><span>История</span><select id="fStory" aria-label="История"><option value="all">Все истории</option></select></div>
+    <label class="chk"><input type="checkbox" id="hideA"> Скрыть ответы</label>
+    <div class="spacer"></div>
+    <button class="btn primary" id="rand10">Тест: 10 случайных</button>
+    <button class="btn" id="saveBtn">Сохранить / загрузить отметки</button>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="q">Вопросы</button>
+    <button role="tab" aria-selected="false" data-tab="t">Текст книги</button>
+  </div>
+
+  <main data-tab="q">
+    <section class="pane" id="qpane" aria-label="Вопросы">
+      <div id="banner"></div>
+      <div class="count" id="count"></div>
+      <div id="list"></div>
+    </section>
+    <section class="pane" id="tpane" aria-label="Текст книги">
+      <div class="thead"><strong>Полный текст</strong>
+        <select id="chapSel" aria-label="Перейти к истории"></select>
+      </div>
+      <div class="tsearch">
+        <input id="tq" type="search" placeholder="Поиск по тексту (Ctrl+F)" aria-label="Поиск по тексту книги" autocomplete="off">
+        <span id="tcount" aria-live="polite"></span>
+        <button class="btn" id="tprev" aria-label="Предыдущее совпадение">↑</button>
+        <button class="btn" id="tnext" aria-label="Следующее совпадение">↓</button>
+      </div>
+      <article class="story" id="story"></article>
+    </section>
+  </main>
+</div>
+
+<dialog id="dlg">
+  <h2>Сохранить или загрузить отметки</h2>
+  <p id="dlgInfo">Отметки сохраняются автоматически в этом браузере. Код ниже нужен, чтобы перенести отметки на другое устройство или сделать резервную копию: скопируйте его, а на другом устройстве вставьте сюда и нажмите «Загрузить».</p>
+  <textarea id="code" spellcheck="false"></textarea>
+  <div class="msg" id="msg"></div>
+  <div class="drow">
+    <button class="btn" id="copyBtn">Скопировать код</button>
+    <button class="btn" id="loadBtn">Загрузить из кода</button>
+    <button class="btn" id="resetBtn">Сбросить все отметки</button>
+    <button class="btn primary" id="closeDlg">Готово</button>
+  </div>
+</dialog>
+
+<script src="data.js"></script>
+<script>
+const {questions:Q, chapters:CH} = window.QUIZ;
+const BYID = Object.fromEntries(Q.map(q=>[q.id,q]));
+const ORDER = [...Q].sort((a,b)=>a.story-b.story||a.id-b.id);
+const LV = {1:"Лёгкий",2:"Средний",3:"Сложный"};
+const marks = {};               // id -> 'ok' | 'rep'
+const KEY='vera-anfisa-marks-v1';
+let store=null; try{ store=window.localStorage; store.setItem('__t','1'); store.removeItem('__t'); }catch(e){ store=null; }
+function persist(){ if(store) try{ store.setItem(KEY, JSON.stringify(marks)); }catch(e){} }
+if(store){ try{ Object.assign(marks, JSON.parse(store.getItem(KEY)||'{}')); }catch(e){} }
+const st = {status:'all', level:'all', story:'all', hide:false, test:null};
+const $ = s => document.querySelector(s);
+
+// stories select + text
+CH.forEach((c,i)=>{
+  $('#fStory').insertAdjacentHTML('beforeend',`<option value="${i+1}">${i+1}. ${c.title}</option>`);
+  $('#chapSel').insertAdjacentHTML('beforeend',`<option value="${i+1}">${i+1}. ${c.title}</option>`);
+});
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const norm = s => s.toLowerCase().replace(/ё/g,'е');
+function hl(t, q){
+  if(!q) return esc(t);
+  const n = norm(t); let out='', i=0, j;
+  while((j=n.indexOf(q,i))!==-1){ out+=esc(t.slice(i,j))+'<mark class="hit">'+esc(t.slice(j,j+q.length))+'</mark>'; i=j+q.length; }
+  return out+esc(t.slice(i));
+}
+function renderStory(q=''){
+$('#story').innerHTML = CH.map((c,i)=>`<h2 id="ch${i+1}">История ${c.n}</h2><h3>${hl(c.title,q)}</h3>`+c.p.map(p=>`<p>${hl(p,q)}</p>`).join('')).join('')
+ + `<p class="src">Текст: Эдуард Успенский, «Про Веру и Анфису». Источник: <a href="https://ruskazki.com/eduard-uspenskij-pro-veru-i-anfisu/" target="_blank" rel="noopener">ruskazki.com</a></p>`;
+}
+renderStory();
+let hits=[], hi=-1, tmr;
+function curHit(k){
+  if(!hits.length){ $('#tcount').textContent = $('#tq').value.trim().length>1 ? 'нет' : ''; return; }
+  hits.forEach(h=>h.classList.remove('cur'));
+  hi=(k+hits.length)%hits.length; const h=hits[hi]; h.classList.add('cur');
+  h.scrollIntoView({block:'center'});
+  $('#tcount').textContent=`${hi+1} из ${hits.length}`;
+}
+function doSearch(){
+  const q=norm($('#tq').value.trim());
+  renderStory(q.length>1?q:'');
+  hits=[...document.querySelectorAll('#story mark.hit')]; curHit(0);
+}
+$('#tq').addEventListener('input',()=>{clearTimeout(tmr); tmr=setTimeout(doSearch,200);});
+$('#tq').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); if(!hits.length) doSearch(); else curHit(hi+(e.shiftKey?-1:1)); } if(e.key==='Escape'){ $('#tq').value=''; doSearch(); }});
+$('#tnext').onclick=()=>curHit(hi+1); $('#tprev').onclick=()=>curHit(hi-1);
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&(e.key==='f'||e.key==='F'||e.key==='а'||e.key==='А')){
+    e.preventDefault(); if(matchMedia('(max-width:900px)').matches) setTab('t'); $('#tq').focus(); $('#tq').select();
+  }
+});
+
+function goChapter(n){
+  const el = document.getElementById('ch'+n); if(!el) return;
+  if (matchMedia('(max-width:900px)').matches) setTab('t');
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  el.nextElementSibling.classList.remove('flash'); void el.offsetWidth; el.nextElementSibling.classList.add('flash');
+  $('#chapSel').value = n;
+}
+$('#chapSel').onchange = e => goChapter(e.target.value);
+
+function filtered(){
+  if (st.test) return st.test.map(id=>BYID[id]);
+  return ORDER.filter(q=>{
+    const m = marks[q.id]||'none';
+    return (st.status==='all'||m===st.status) && (st.level==='all'||q.level==st.level) && (st.story==='all'||q.story==st.story);
+  });
+}
+function render(){
+  const list = filtered();
+  const n = Object.values(marks);
+  $('#sOk').textContent = n.filter(x=>x==='ok').length;
+  $('#sRep').textContent = n.filter(x=>x==='rep').length;
+  $('#sNone').textContent = Q.length - n.length;
+  $('#sAll').textContent = Q.length;
+  $('#banner').innerHTML = st.test ? `<div class="banner"><span>Тест: 10 случайных вопросов из выбранных</span><span style="display:flex;gap:8px"><button class="btn" id="reroll">Другие 10</button><button class="btn" id="exitTest">Выйти из теста</button></span></div>` : '';
+  $('#count').textContent = st.test ? '' : `Показано вопросов: ${list.length}`;
+  if (!list.length){ $('#list').innerHTML = `<div class="empty">${st.status==='rep'?'Вопросов для повторения пока нет. Отметьте «Повторить» у вопросов, где ребёнок ошибся.':'Под выбранные условия вопросов нет.'}</div>`; return; }
+  $('#list').innerHTML = list.map(q=>{
+    const m = marks[q.id]||'';
+    return `<div class="card ${m}" data-id="${q.id}">
+      <div class="num">${q.id}</div>
+      <div>
+        <div class="meta"><span class="lvl l${q.level}">${LV[q.level]}</span><span>История ${q.story}</span>${q.new?'<span class="newb">новый</span>':''}<button class="toText" data-ch="${q.story}">открыть в тексте</button></div>
+        <div class="q">${esc(q.q)}</div>
+        <div class="a ${st.hide?'hidden':''}">(${esc(q.a)})</div>
+      </div>
+      <div class="marks">
+        <button class="mark ok" data-m="ok" aria-pressed="${m==='ok'}">✓ Уверенно, правильно</button>
+        <button class="mark rep" data-m="rep" aria-pressed="${m==='rep'}">↻ Нужно повторить</button>
+      </div></div>`;
+  }).join('');
+  if (st.test){ $('#reroll').onclick = startTest; $('#exitTest').onclick = ()=>{st.test=null; render();}; }
+}
+$('#list').addEventListener('click', e=>{
+  const card = e.target.closest('.card'); if(!card) return;
+  const id = +card.dataset.id;
+  const t = e.target.closest('.toText'); if (t){ goChapter(t.dataset.ch); return; }
+  const a = e.target.closest('.a.hidden'); if (a){ a.classList.remove('hidden'); return; }
+  const b = e.target.closest('.mark'); if (!b) return;
+  if (marks[id]===b.dataset.m) delete marks[id]; else marks[id]=b.dataset.m;
+  persist();
+  const keep = st.status==='all' || st.test;
+  if (keep){ // update in place, keep scroll
+    const m = marks[id]||'';
+    card.className = 'card '+m;
+    card.querySelectorAll('.mark').forEach(x=>x.setAttribute('aria-pressed', x.dataset.m===m));
+    const n = Object.values(marks);
+    $('#sOk').textContent = n.filter(x=>x==='ok').length;
+    $('#sRep').textContent = n.filter(x=>x==='rep').length;
+    $('#sNone').textContent = Q.length - n.length;
+  } else render();
+});
+function seg(id,key){
+  document.querySelectorAll(`#${id} button`).forEach(b=>b.onclick=()=>{
+    document.querySelectorAll(`#${id} button`).forEach(x=>x.setAttribute('aria-pressed',x===b));
+    st[key]=b.dataset.v; st.test=null; render();
+  });
+}
+seg('fStatus','status'); seg('fLevel','level');
+$('#fStory').onchange = e=>{ st.story=e.target.value; st.test=null; render(); };
+$('#hideA').onchange = e=>{ st.hide=e.target.checked; render(); };
+function startTest(){
+  const saved = st.test; st.test=null;
+  const pool = filtered().map(q=>q.id);
+  if (!pool.length){ st.test=saved; alert('Под выбранные условия нет вопросов.'); return; }
+  for (let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  st.test = pool.slice(0,10).sort((a,b)=>BYID[a].story-BYID[b].story||a-b);
+  $('#qpane').scrollTop=0; render();
+}
+$('#rand10').onclick = startTest;
+
+// tabs (mobile)
+function setTab(t){ document.querySelector('main').dataset.tab=t; document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t)); }
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+
+// save / load code: "З:1,2,3 П:4,5"
+function makeCode(){
+  const ok=[],rep=[]; Object.entries(marks).forEach(([k,v])=>(v==='ok'?ok:rep).push(+k));
+  ok.sort((a,b)=>a-b); rep.sort((a,b)=>a-b);
+  return `З:${ok.join(',')} П:${rep.join(',')}`;
+}
+const dlg = $('#dlg');
+$('#saveBtn').onclick = ()=>{ $('#code').value = makeCode(); $('#msg').textContent=''; dlg.showModal(); };
+$('#closeDlg').onclick = ()=>dlg.close();
+$('#copyBtn').onclick = async ()=>{
+  const ta=$('#code'); ta.value=makeCode(); ta.select();
+  let ok=false; try{ await navigator.clipboard.writeText(ta.value); ok=true; }catch(e){ try{ ok=document.execCommand('copy'); }catch(_){} }
+  $('#msg').textContent = ok ? 'Код скопирован.' : 'Код выделен — скопируйте его вручную (Ctrl+C / «Копировать»).';
+};
+$('#loadBtn').onclick = ()=>{
+  const s=$('#code').value; const z=s.match(/З:\s*([\d,\s]*)/i), p=s.match(/П:\s*([\d,\s]*)/i);
+  if(!z && !p){ $('#msg').textContent='Не удалось прочитать код. Он должен выглядеть так: З:1,2 П:3,4'; return; }
+  Object.keys(marks).forEach(k=>delete marks[k]);
+  const put=(m,v)=>m&&m[1].split(/[,\s]+/).filter(Boolean).forEach(n=>{n=+n; if(BYID[n]) marks[n]=v;});
+  put(z,'ok'); put(p,'rep'); persist();
+  $('#msg').textContent=`Загружено: знает — ${Object.values(marks).filter(x=>x==='ok').length}, повторить — ${Object.values(marks).filter(x=>x==='rep').length}.`;
+  render();
+};
+$('#resetBtn').onclick = ()=>{ if(confirm('Сбросить все отметки?')){ Object.keys(marks).forEach(k=>delete marks[k]); persist(); $('#code').value=makeCode(); render(); } };
+
+if(!store) $('#dlgInfo').textContent='В этом окне браузер не разрешает сохранять отметки автоматически. Скопируйте код и сохраните его, чтобы не потерять отметки.';
+render();
+</script>
+</body>
+</html>
