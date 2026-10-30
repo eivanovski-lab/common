@@ -239,7 +239,7 @@ function hl(t, q){
 }
 function renderStory(q=''){
 $('#story').innerHTML = CH.map((c,i)=>`<h2 id="ch${i+1}">Глава ${c.n}</h2><h3>${hl(c.title,q)}</h3>`+c.p.map(p=>`<p>${hl(p,q)}</p>`).join('')).join('')
- + `<p class="src">Текст: Ирина Токмакова, «Аля, Кляксич и буква „А“». Главы 1–4 и 6–10 — <a href="https://www.sestroretsk.com/pdf/bibl_books/alia_kliaksich_i_bukva_a.pdf" target="_blank" rel="noopener">PDF на sestroretsk.com</a> (сверен с изданием «Махаон» 2025 по первой главе); глава 5 — <a href="https://skazki.dy9.ru/alya-klyaksich-i-bukva-a-tokmakova-i/4/" target="_blank" rel="noopener">skazki.dy9.ru</a>; песенки Дуни и скороговорка «Ч» и «Ц» — <a href="https://books.yandex.ru/books/E20YeOl2/read-online" target="_blank" rel="noopener">Яндекс Книги</a> (в PDF они только на картинках). Мелкие слова в разных изданиях могут отличаться.</p>`;
+ + `<p class="src">Текст: Ирина Токмакова, «Аля, Кляксич и буква „А“». Главы 1–4 и 6–10 — <a href="https://www.sestroretsk.com/pdf/bibl_books/alia_kliaksich_i_bukva_a.pdf" target="_blank" rel="noopener">PDF на sestroretsk.com</a> (сверен с изданием «Махаон» 2025 по первой главе); глава 5 — по изданию «Махаон» 2025 (сверено по фото страниц 36–41); песенки Дуни и скороговорка «Ч» и «Ц» — <a href="https://books.yandex.ru/books/E20YeOl2/read-online" target="_blank" rel="noopener">Яндекс Книги</a> (в PDF они только на картинках). Мелкие слова в разных изданиях могут отличаться.</p>`;
 }
 renderStory();
 let hits=[], hi=-1, tmr;
