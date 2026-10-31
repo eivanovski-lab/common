@@ -73,8 +73,15 @@ main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);min-height:
 .toText{border:0;background:none;color:var(--muted);text-decoration:underline;text-underline-offset:2px;padding:0;font-size:12px}
 .q{font-weight:600;font-size:15.5px}
 .a{color:var(--ink);opacity:.85}
-.a.hidden{color:transparent;background:var(--surface-2);border-radius:6px;cursor:pointer;user-select:none;opacity:1;position:relative}
-.a.hidden::after{content:"показать ответ";position:absolute;left:8px;top:0;color:var(--muted);font-size:13px}
+.a.hidden{color:transparent;background:var(--surface-2);border:1px dashed var(--line);border-radius:6px;cursor:pointer;user-select:none;opacity:1;position:relative;display:inline-block;min-width:210px;max-width:100%;padding:0 10px;overflow:hidden}
+.a.hidden::after{content:"нажми, чтобы увидеть ответ";position:absolute;left:10px;top:0;color:var(--muted);font-size:13px;white-space:nowrap}
+.a.peek{cursor:pointer}
+.tgl{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 14px 5px 6px;font-size:14px;font-weight:600;color:var(--ink)}
+.tgl .sw{width:34px;height:20px;border-radius:999px;background:var(--line);position:relative;transition:background .15s}
+.tgl .sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:left .15s}
+.tgl[aria-checked=true]{border-color:var(--accent);color:var(--accent)}
+.tgl[aria-checked=true] .sw{background:var(--accent)}
+.tgl[aria-checked=true] .sw::after{left:16px}
 .marks{grid-column:2;display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
 .mark{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 12px;font-size:13.5px}
 .mark.ok[aria-pressed=true]{background:var(--ok);border-color:var(--ok);color:#fff}
@@ -114,6 +121,9 @@ dialog textarea{width:100%;min-height:90px;border:1px solid var(--line);border-r
   header{flex-wrap:wrap;padding:12px 14px}
   .stats{margin-left:0;width:100%}
   .toolbar{padding:10px 14px}
+  .app{grid-template-columns:minmax(0,1fr)}
+  .seg button{padding:5px 8px}
+  .group{flex-wrap:wrap}
   main{grid-template-columns:1fr}
   .pane{overflow:visible}
   #tpane{border-left:0}
@@ -165,7 +175,7 @@ dialog textarea{width:100%;min-height:90px;border:1px solid var(--line);border-r
       </div>
     </div>
     <div class="group"><span>Глава</span><select id="fStory" aria-label="Глава"><option value="all">Все главы</option></select></div>
-    <label class="chk"><input type="checkbox" id="hideA"> Скрыть ответы</label>
+    <button class="tgl" id="hideA" role="switch" aria-checked="false"><span class="sw" aria-hidden="true"></span><span>Скрыть ответы</span></button>
     <div class="spacer"></div>
     <button class="btn primary" id="rand10">Тест: 10 случайных</button>
     <button class="btn" id="saveBtn">Сохранить / загрузить отметки</button>
@@ -297,7 +307,7 @@ function render(){
       <div>
         <div class="meta"><span class="lvl l${q.level}">${LV[q.level]}</span><span>Глава ${q.story}</span>${q.new?'<span class="newb">новый</span>':''}<button class="toText" data-ch="${q.story}">открыть в тексте</button></div>
         <div class="q">${esc(q.q)}</div>
-        <div class="a ${st.hide?'hidden':''}">(${esc(q.a)})</div>
+        <div class="a ${st.hide?'hidden peek':''}">(${esc(q.a)})</div>
       </div>
       <div class="marks">
         <button class="mark ok" data-m="ok" aria-pressed="${m==='ok'}">✓ Уверенно, правильно</button>
@@ -310,7 +320,7 @@ $('#list').addEventListener('click', e=>{
   const card = e.target.closest('.card'); if(!card) return;
   const id = +card.dataset.id;
   const t = e.target.closest('.toText'); if (t){ goChapter(t.dataset.ch); return; }
-  const a = e.target.closest('.a.hidden'); if (a){ a.classList.remove('hidden'); return; }
+  const a = e.target.closest('.a.peek'); if (a){ a.classList.toggle('hidden'); return; }
   const b = e.target.closest('.mark'); if (!b) return;
   if (marks[id]===b.dataset.m) delete marks[id]; else marks[id]=b.dataset.m;
   persist();
@@ -333,7 +343,10 @@ function seg(id,key){
 }
 seg('fStatus','status'); seg('fLevel','level');
 $('#fStory').onchange = e=>{ st.story=e.target.value; st.test=null; render(); };
-$('#hideA').onchange = e=>{ st.hide=e.target.checked; render(); };
+const HKEY='alya-klyaksich-hide-v1';
+function setHide(v){ st.hide=v; $('#hideA').setAttribute('aria-checked',v); if(store) try{store.setItem(HKEY,v?'1':'0');}catch(e){} }
+if(store && store.getItem(HKEY)==='1') setHide(true);
+$('#hideA').onclick = ()=>{ setHide(!st.hide); render(); };
 function startTest(){
   const saved = st.test; st.test=null;
   const pool = filtered().map(q=>q.id);
