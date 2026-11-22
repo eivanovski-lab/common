@@ -25,11 +25,13 @@ a.card:hover{border-color:var(--accent)}
 </head><body>
 <h1>Квизы по прочитанным книгам</h1>
 <p class="lead">Вопросы по полному тексту книги с ответами, отметками «знает / повторить» и текстом рядом.</p>
+<button id="syncBtn" style="display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);color:inherit;border-radius:10px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer;margin-bottom:6px"><span class="qs-dot"></span><span id="syncT">Синхронизация</span></button>
 <h2>Готовые</h2><div class="grid" id="ready"></div>
 <div id="soonWrap"><h2>Готовятся</h2><div class="grid" id="soon"></div></div>
 <script src="catalog.js"></script><script src="nav.js"></script>
 <script>
 var N=window.QUIZ_NAV, C=N.catalog;
+function draw(){
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 document.getElementById('ready').innerHTML=C.filter(function(b){return b.status==='ready'}).map(function(b){
   var p=N.progress(b)||{ok:0,rep:0}, pr='';
@@ -42,5 +44,11 @@ if(!soon.length) document.getElementById('soonWrap').hidden=true;
 document.getElementById('soon').innerHTML=soon.map(function(b){
   return '<div class="card soon"><div class="t">'+esc(b.title)+'<span class="tag">'+esc(b.note||'скоро')+'</span></div><div class="s">'+esc(b.author)+' · '+b.count+' '+N.plural(b.count)+'</div></div>';
 }).join('');
+}
+draw(); window.QUIZ_REFRESH=draw;
+function syncBtn(){ var L=N.syncLabel(); document.getElementById("syncT").textContent=L.text; document.querySelector("#syncBtn .qs-dot").className="qs-dot "+L.cls; }
+document.getElementById("syncBtn").onclick=function(){ N.openSync(); };
+window.addEventListener("qsync", syncBtn); setTimeout(syncBtn,0);
 </script>
+<script src="sync.js"></script>
 </body></html>
