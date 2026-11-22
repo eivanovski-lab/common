@@ -1,11 +1,46 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>common</title>
-<style>body{font:16px/1.5 system-ui,sans-serif;max-width:640px;margin:48px auto;padding:0 20px;color:#2a231d;background:#f6f0e4}a{color:#c9741f}li{margin:8px 0}</style>
+<title>Квизы по прочитанным книгам</title>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f0e4;--surface:#fffaf1;--surface-2:#efe6d5;--line:#e2d6c0;--ink:#2a231d;--muted:#76695a;--accent:#c9741f;--ok:#2f7a4a;--rep:#b8502a}
+@media (prefers-color-scheme:dark){:root{--bg:#1c1814;--surface:#25201b;--surface-2:#2f2922;--line:#3c342b;--ink:#efe6d8;--muted:#a8998a;--accent:#e08e3c;--ok:#6cc08a;--rep:#ee8a63}}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.5 "Golos Text",system-ui,sans-serif;max-width:720px;margin:0 auto;padding:40px 20px 60px;color:var(--ink);background:var(--bg)}
+h1{font-size:26px;margin-bottom:4px}
+.lead{color:var(--muted);margin-bottom:24px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:26px 0 10px}
+.grid{display:grid;gap:12px}
+.card{display:block;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:14px 16px;color:inherit;text-decoration:none}
+a.card:hover{border-color:var(--accent)}
+.card.soon{border-left-color:var(--line);opacity:.7}
+.t{font-weight:700;font-size:17px}
+.s{color:var(--muted);font-size:14px;margin-top:2px}
+.p{font-size:13.5px;margin-top:8px}
+.p .ok{color:var(--ok)}.p .rep{color:var(--rep)}
+.bar{height:6px;border-radius:99px;background:var(--surface-2);margin-top:6px;overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:99px;border:1px solid currentColor;color:var(--muted);margin-left:8px;vertical-align:2px}
+</style>
 </head><body>
-<h1>Материалы</h1>
-<ul>
-<li><a href="vera-anfisa/">Про Веру и Анфису — 200 вопросов</a></li>
-<li><a href="alya/">Аля, Кляксич и буква «А» — 184 вопроса</a></li>
-</ul>
+<h1>Квизы по прочитанным книгам</h1>
+<p class="lead">Вопросы по полному тексту книги с ответами, отметками «знает / повторить» и текстом рядом.</p>
+<h2>Готовые</h2><div class="grid" id="ready"></div>
+<div id="soonWrap"><h2>Готовятся</h2><div class="grid" id="soon"></div></div>
+<script src="catalog.js"></script><script src="nav.js"></script>
+<script>
+var N=window.QUIZ_NAV, C=N.catalog;
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+document.getElementById('ready').innerHTML=C.filter(function(b){return b.status==='ready'}).map(function(b){
+  var p=N.progress(b)||{ok:0,rep:0}, pr='';
+  if(p.ok||p.rep) pr='<div class="p"><span class="ok">знает '+p.ok+'</span> · <span class="rep">повторить '+p.rep+'</span> · без отметки '+(b.count-p.ok-p.rep)+
+    '<div class="bar"><i style="width:'+(100*p.ok/b.count)+'%;background:var(--ok)"></i><i style="width:'+(100*p.rep/b.count)+'%;background:var(--rep)"></i></div></div>';
+  return '<a class="card" href="'+b.slug+'/"><div class="t">'+esc(b.title)+'</div><div class="s">'+esc(b.author)+' · '+b.count+' '+N.plural(b.count)+'</div>'+pr+'</a>';
+}).join('');
+var soon=C.filter(function(b){return b.status!=='ready'});
+if(!soon.length) document.getElementById('soonWrap').hidden=true;
+document.getElementById('soon').innerHTML=soon.map(function(b){
+  return '<div class="card soon"><div class="t">'+esc(b.title)+'<span class="tag">'+esc(b.note||'скоро')+'</span></div><div class="s">'+esc(b.author)+' · '+b.count+' '+N.plural(b.count)+'</div></div>';
+}).join('');
+</script>
 </body></html>
