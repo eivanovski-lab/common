@@ -225,13 +225,15 @@ dialog textarea{width:100%;min-height:90px;border:1px solid var(--line);border-r
 <script>
 const {questions:Q, chapters:CH} = window.QUIZ;
 const BYID = Object.fromEntries(Q.map(q=>[q.id,q]));
-const ORDER = [...Q].sort((a,b)=>a.story-b.story||a.id-b.id);
+const NUM = q => q.n||q.id;             // n — порядковый номер на экране, id — постоянный ключ отметки
+const ORDER = [...Q].sort((a,b)=>a.story-b.story||NUM(a)-NUM(b));
 const LV = {1:"Лёгкий",2:"Средний",3:"Сложный"};
 const marks = {};               // id -> 'ok' | 'rep'
 const KEY='udivitelnyj-den-marks-v1';
 let store=null; try{ store=window.localStorage; store.setItem('__t','1'); store.removeItem('__t'); }catch(e){ store=null; }
 function persist(){ if(store) try{ store.setItem(KEY, JSON.stringify(marks)); }catch(e){} }
 if(store){ try{ Object.assign(marks, JSON.parse(store.getItem(KEY)||'{}')); }catch(e){} }
+{ let stale=false; Object.keys(marks).forEach(k=>{ if(!BYID[k]){ delete marks[k]; stale=true; } }); if(stale) persist(); } // отметки удалённых вопросов не считаем
 const st = {status:'all', level:'all', story:'all', hide:false, test:null};
 const $ = s => document.querySelector(s);
 
@@ -304,7 +306,7 @@ function render(){
   $('#list').innerHTML = list.map(q=>{
     const m = marks[q.id]||'';
     return `<div class="card ${m}" data-id="${q.id}">
-      <div class="num">${q.id}</div>
+      <div class="num">${NUM(q)}</div>
       <div>
         <div class="meta"><span class="lvl l${q.level}">${LV[q.level]}</span><span>Часть ${q.story}</span>${q.new?'<span class="newb">новый</span>':''}<button class="toText" data-ch="${q.story}">открыть в тексте</button></div>
         <div class="q">${esc(q.q)}</div>
@@ -353,7 +355,7 @@ function startTest(){
   const pool = filtered().map(q=>q.id);
   if (!pool.length){ st.test=saved; alert('Под выбранные условия нет вопросов.'); return; }
   for (let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
-  st.test = pool.slice(0,10).sort((a,b)=>BYID[a].story-BYID[b].story||a-b);
+  st.test = pool.slice(0,10).sort((a,b)=>BYID[a].story-BYID[b].story||NUM(BYID[a])-NUM(BYID[b]));
   $('#qpane').scrollTop=0; render();
 }
 $('#rand10').onclick = startTest;
